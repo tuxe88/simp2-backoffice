@@ -86,4 +86,7 @@ class Controller extends BaseController
         return view('companies', ["response"=>$response]);
     }
 
+    public function debts(Request $request){}
+
+    public function users(Request $request){}
 }

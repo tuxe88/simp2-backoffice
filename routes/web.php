@@ -19,10 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/dashboard', [App\Http\Controllers\Controller::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\Controller::class, 'dashboard'])->name('dashboard')->middleware('auth');
 
-Route::get('/companies', [App\Http\Controllers\Controller::class, 'companies'])->name('companies');
-Route::post('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies');
-Route::put('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies');
+Route::get('/companies', [App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth');
+Route::post('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth');
+Route::put('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

@@ -1,5 +1,5 @@
-@extends('layouts.base', ["title"=> "Companies",
-                            "sectionTitle"=>"Companies",
+@extends('layouts.base', ["title"=> "Users",
+                            "sectionTitle"=>"Users",
                             "subSectionTitle"=>"",
                             "subSectionSubTitle"=>""])
 
@@ -12,11 +12,11 @@
         <div class="col-md-12 col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Current companies</div>
+                    <div class="card-title">Current users</div>
                 </div>
                 <div class="d-flex table-responsive p-3">
                     <div class="btn-group mr-2">
-                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addModal"><i class="mdi mdi-plus-circle-outline"></i> Add new company</button>
+                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addModal"><i class="mdi mdi-plus-circle-outline"></i> Add new user</button>
                     </div>
                     <div class="btn-group mr-2">
                         <button type="button" class="btn btn-light" disabled><i class="mdi mdi-printer"></i></button>
@@ -36,38 +36,50 @@
                                                 aria-label="Name: activate to sort column descending"
                                                 style="width: 47px;">Name
                                             </th>
+                                            <th class="wd-15p sorting" tabindex="0" aria-controls="example"
+                                                rowspan="1" colspan="1" aria-sort="ascending"
+                                                aria-label="Email: activate to sort column descending"
+                                                style="width: 47px;">Email
+                                            </th>
                                             <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" aria-label="Status: activate to sort column ascending"
                                                 style="width: 47px;">Status
                                             </th>
                                             <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" aria-label="CompanyTransactionToken: activate to sort column ascending"
-                                                style="width: 47px;">Company transaction token
+                                                colspan="1" aria-label="Role: activate to sort column ascending"
+                                                style="width: 47px;">Role
                                             </th>
+                                            <th class="wd-15p sorting" tabindex="0" aria-controls="example"
+                                                rowspan="1" colspan="1" aria-sort="ascending"
+                                                aria-label="Creation date: activate to sort column descending"
+                                                style="width: 47px;">Creation date
+                                            </th>
+
                                             <th class="wd-25p sorting" tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" aria-label="E-mail: activate to sort column ascending"
-                                                style="width: 5px;">Options
+                                                colspan="1" aria-label="Options: activate to sort column ascending"
+                                                style="width: 5px;">
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($response["companies"] as $company)
+                                        @foreach ($response["users"] as $user)
                                                 <tr role="row" class="@if ($loop->even) even @else odd @endif">
-                                                    <td class="sorting_1">{{$company["name"]}}</td>
+                                                    <td class="sorting_1">{{$user["name"]}}</td>
+                                                    <td>{{$user["email"]}}</td>
                                                     <td>
-                                                        @if ( isset($company["enabled"]) && $company["enabled"]==true)
+                                                        @if ( isset($user["enabled"]) && $user["enabled"]==true)
                                                             <span class="tag tag-lime">Enabled</span>
                                                         @else
                                                             <span class="tag tag-gray">Disabled</span>
                                                         @endif
                                                     </td>
-                                                    <td class="sorting_1">{{$company["company_transaction_token"]}}</td>
+                                                    <td>{{$user->getRoleNames()[0]}}</td>
+                                                    <td>{{$user["created_at"]->format('j F, Y')}}</td>
                                                     <td>
                                                         <div class="item-action dropdown">
                                                             <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
                                                             <div class="dropdown-menu dropdown-menu-right">
                                                                 <a href="javascript:editCompany(0)" class="dropdown-item"><i class="dropdown-icon fe fe-edit-2"></i> Edit </a>
-                                                                {{--<a href="javascript:void(0)" class="dropdown-item"><i class="dropdown-icon fe fe-delete"></i> Delete </a>--}}
                                                             </div>
                                                         </div>
                                                     </td>
@@ -92,23 +104,40 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="example-Modal3">New company</h5>
+                    <h5 class="modal-title" id="example-Modal3">New user</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('companies')}}" method="post">
+                    <form action="{{route('users')}}" method="post">
                         @csrf <!-- {{ csrf_field() }} -->
-                        <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Name:</label>
-                            <input type="text" class="form-control" name="name" id="company-name">
-                        </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Name:</label>
+                                <input type="text" class="form-control" name="name" id="user-name-create">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Email:</label>
+                                <input type="text" class="form-control" name="email" id="user-email-create">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">User role</label>
+                                <select name="user-role-create" id="select-roles-create" class="form-control custom-select">
+                                    @foreach($response["roles"] as $role)
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <label class="custom-switch">
+                                <input id="user-enable-modify" type="checkbox" name="enabled" class="custom-switch-input" checked>
+                                <span class="custom-switch-indicator"></span>
+                                <span class="custom-switch-description">Enabled</span>
+                            </label>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create company</button>
-                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Modify user</button>
+                            </div>
                     </form>
                 </div>
             </div>
@@ -120,30 +149,42 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="example-Modal3">Modify company</h5>
+                    <h5 class="modal-title" id="example-Modal3">Modify user</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('companies')}}" method="post">
+                    <form action="{{ route('users')}}" method="post">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
 
                         @csrf <!-- {{ csrf_field() }} -->
                         <div class="form-group">
                             <label for="recipient-name" class="form-control-label">Name:</label>
-                            <input type="text" class="form-control" name="name" id="company-name-modify">
+                            <input type="text" class="form-control" name="name" id="user-name-modify">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Email:</label>
+                            <input type="text" class="form-control" name="email" id="user-email-modify">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">User role</label>
+                            <select name="user-role-modify" id="select-roles" class="form-control custom-select">
+                                @foreach($response["roles"] as $role)
+                                    <option value="{{$role->id}}">{{$role->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <label class="custom-switch">
-                            <input id="company-enable-modify" type="checkbox" name="enabled" class="custom-switch-input" checked>
+                            <input id="user-enable-modify" type="checkbox" name="enabled" class="custom-switch-input" checked>
                             <span class="custom-switch-indicator"></span>
                             <span class="custom-switch-description">Enabled</span>
                         </label>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Modify company</button>
+                            <button type="submit" class="btn btn-primary">Modify user</button>
                         </div>
 
                     </form>
@@ -171,16 +212,22 @@
 
             $('#example tbody').on( 'click', 'a', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                $("#company-name-modify").val(data[0]);
-                var enabled = data[1].includes("Enabled");
-                /*console.log(enabled);*/
-                $("#company-enable-modify").prop("checked", enabled);
-                //console.log( data );
+                $("#user-name-modify").val(data[0]);
+
+                $("#user-email-modify").val(data[1]);
+
+                var enabled = data[2].includes("Enabled");
+                $("#user-enable-modify").prop("checked", enabled);
+
+                var role = data[3]
+                //console.log(role);
+                $('#select-roles option[value="'+role+'"]');
+
             } );
         });
 
         function editCompany(a){
-            console.log(a);
+            //console.log(a);
             $("#modifyModal").modal();
         }
     </script>

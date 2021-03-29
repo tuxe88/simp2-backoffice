@@ -273,56 +273,17 @@
                             <span> DASHBOARD</span>
                         </a>
                     </li>
+                    @if(@Auth::user()->hasRole('admin'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('companies')}}"><i class="fa fa-building"></i> <span>Companies</span></a>
-                       {{-- <div class="sub-item">
-                            <ul>
-
-                                <li>
-                                    <a href="#">Dar de alta</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dar de baja</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">Modificar</a>
-                                </li>
-                            </ul>
-                        </div>--}}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('users')}}"><i class="fa fa-user"></i> <span>Usuarios</span></a>
                         <!-- dropdown-menu -->
                     </li>
-
-                    <li class="nav-item with-sub">
-                        <a class="nav-link" href="#"><i class="fa fa-user"></i> <span>Usuarios</span></a>
-                        <div class="sub-item">
-                            <ul>
-                                <li>
-                                    <a href="#">Dar de alta</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dar de baja</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">Modificar</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- dropdown-menu -->
-                    </li>
-                    <li class="nav-item with-sub">
+                    @endif
+                    <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fa fa-money"></i> <span>Deudas</span></a>
-                        <div class="sub-item">
-                            <ul>
-                                <li>
-                                    <a href="#">Dar de alta</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dar de baja</a>
-                                </li>
-                            </ul>
-                        </div>
                         <!-- dropdown-menu -->
                     </li>
                 </ul>

@@ -16,7 +16,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <link rel="icon" href="{{asset('favicon.ico')}}" type="image/x-icon"/>
+    <link rel="icon" href="{{asset('cropped-fav-32x32.png')}}" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('favicon.ico')}}" />
 
     <!-- Title -->
@@ -52,7 +52,7 @@
             <div class="container">
                 <div class="d-flex">
                     <a class="header-brand" href="{{route('dashboard')}}">
-                        <img src="{{asset('images/brand/logo.png')}}" class="header-brand-img" alt="Viboon logo">
+                        <img src="{{asset('cropped-fav-192x192.png')}}" class="header-brand-img" alt="Viboon logo">
                     </a>
                     <div class=" ">
                         <form class="input-icon mt-2 ">

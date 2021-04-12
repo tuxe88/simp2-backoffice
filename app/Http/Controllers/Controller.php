@@ -88,15 +88,56 @@ class Controller extends BaseController
     public function users(Request $request){
         $response = [];
 
+        if ($request->method() == 'PUT'){
+
+            $enabled = isset($request->all()["enabled"]) ? true : false;
+            $userId = $request->get('id-user-apiclient-modify');
+            $bodyReq = ["id"=>$userId, "enabled"=>$enabled];
+
+            try{
+                $response_guzzle = $this->client->put('api_clients', ["form_params" =>$bodyReq]);
+                $response["successMsg"] = "The user was modified successfully.";
+            }catch (ClientException $e) {
+                if ($e->getResponse()->getStatusCode() == 404) {
+                    $response["errorMsg"] = "The user was not found.";
+                }
+            }catch (ServerException $e){
+                if($e->getResponse()->getStatusCode()==500){
+                    $response["errorMsg"] = "An unexpected error has ocurred please retry.";
+                }
+            }catch (GuzzleException $e){
+                $response["warningMsg"] = "There was an error in the connection, please retry.";
+            }
+
+        }
+
         if ($request->method() == 'POST')
         {
             $all = $request->all();
+            $name = $all["name"];
+            $lastName = $all["last_name"];
+            $userRole = $all["user_role_create"];
+            $companyUniqueId = (int) $all["user_company_create"];
+            $enabled = isset($all["enabled"]) ? true : false;
+
             try {
-                dd($all);
-                $response["successMsg"] = "The company ".$all["name"]." was created successfully.";
+                //dd($all);
+                $res = $this->client->post('api_clients',
+                    ["form_params" =>
+                        [
+                            "name"=>$name,
+                            "last_name"=>$lastName,
+                            "role"=>$userRole,
+                            "company_unique_id"=>$companyUniqueId,
+                            "enabled"=>$enabled,
+                        ]
+                    ]
+                );
+                //dd($res->getStatusCode());
+                $response["successMsg"] = "The user ".$all["name"]." ".$all["last_name"]." was created successfully.";
             }catch (ClientException $e){
                 if($e->getResponse()->getStatusCode()==409){
-                    $response["errorMsg"] = "The selected name ".$all["name"]." is already taken.";
+                    $response["errorMsg"] = "The selected name ".$all["name"]." ".$all["last_name"]." is already taken for the company selected.";
                 }
             }catch (ServerException $e){
                 if($e->getResponse()->getStatusCode()==500){
@@ -107,8 +148,11 @@ class Controller extends BaseController
             }
         }
 
-        $response["users"] = User::all();
+        $response["backoffice_users"] = User::all();
+        $response["api_clients"] = json_decode($this->client->get('api_clients')->getBody()->getContents(), true);
+        $response["companies"] = json_decode($this->client->get('company')->getBody()->getContents(), true);
         $response["roles"] = Role::all();
+        //dd($response["api_clients"][0]["_id"]);
 
         return view('users', ["response"=>$response]);
     }

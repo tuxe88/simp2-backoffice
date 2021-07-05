@@ -55,15 +55,15 @@
                         <img src="{{asset('cropped-fav-192x192.png')}}" class="header-brand-img" alt="Viboon logo">
                     </a>
                     <div class=" ">
-                        <form class="input-icon mt-2 ">
+                        {{--<form class="input-icon mt-2 ">
                             <div class="input-icon-addon">
                                 <i class="fe fe-search"></i>
                             </div>
                             <input type="search" class="form-control header-search" placeholder="Search&hellip;" tabindex="1">
-                        </form>
+                        </form>--}}
                     </div>
                     <div class="d-flex order-lg-2 ml-auto">
-                        <div class="dropdown d-none d-md-flex mt-1" >
+                        {{--<div class="dropdown d-none d-md-flex mt-1" >
                             <a  class="nav-link icon full-screen-link">
                                 <i class="fe fe-maximize floating"  id="fullscreen-button"></i>
                             </a>
@@ -177,9 +177,9 @@
                                 <div class="dropdown-divider"></div>
                                 <a href="#" class="dropdown-item text-center">See all Messages</a>
                             </div>
-                        </div>
+                        </div>--}}
                         <div class="dropdown d-none d-md-flex mt-1">
-                            <a class="nav-link icon" data-toggle="dropdown">
+                            {{--<a class="nav-link icon" data-toggle="dropdown">
                                 <i class="fe fe-grid floating"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -223,19 +223,19 @@
                                 </ul>
                                 <div class="dropdown-divider"></div>
                                 <a href="#" class="dropdown-item text-center">View all</a>
-                            </div>
+                            </div>--}}
                         </div>
                         <div class="dropdown mt-1">
                             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                                <span class="avatar avatar-md brround" style="background-image: url({{asset('images/faces/female/25.jpg')}})"></span>
+                                <span class="avatar avatar-md brround" style="background-image: url({{asset('images/anonuser.png')}})"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
                                 <div class="text-center">
-                                    <a href="#" class="dropdown-item text-center font-weight-sembold user">Jessica Allan</a>
-                                    <span class="text-center user-semi-title text-dark">web designer</span>
+                                    <a href="#" class="dropdown-item text-center font-weight-sembold user">{{Auth::user()->name}}</a>
+                                    <span class="text-center user-semi-title text-dark">{{Auth::user()->roles[0]->name}}</span>
                                     <div class="dropdown-divider"></div>
                                 </div>
-                                <a class="dropdown-item" href="#">
+                                {{--<a class="dropdown-item" href="#">
                                     <i class="dropdown-icon mdi mdi-account-outline "></i> Profile
                                 </a>
                                 <a class="dropdown-item" href="#">
@@ -251,7 +251,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">
                                     <i class="dropdown-icon mdi mdi-compass-outline"></i> Need help?
-                                </a>
+                                </a>--}}
                                 <a class="dropdown-item" href="{{ url('logout') }}">
                                     <i class="dropdown-icon mdi  mdi-logout-variant"></i> Sign out
                                 </a>
@@ -278,12 +278,22 @@
                         <a class="nav-link" href="{{route('companies')}}"><i class="fa fa-building"></i> <span>Companies</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('users')}}"><i class="fa fa-user"></i> <span>Usuarios</span></a>
+                        <a class="nav-link" href="{{route('users')}}"><i class="fa fa-user"></i> <span>Users</span></a>
                         <!-- dropdown-menu -->
                     </li>
                     @endif
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fa fa-money"></i> <span>Deudas</span></a>
+                        <a class="nav-link" href="{{route('debts')}}"><i class="fa fa-money"></i> <span>Debts</span></a>
+                        <!-- dropdown-menu -->
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('reverses')}}"><i class="fa fa-step-backward"></i> <span>Reverses</span></a>
+                        <!-- dropdown-menu -->
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('warnings')}}"><i class="fa fa-warning"></i> <span>Warnings</span></a>
                         <!-- dropdown-menu -->
                     </li>
                 </ul>

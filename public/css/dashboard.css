@@ -19948,3 +19948,23 @@ Inbox Message Style
 		display: none;
 	}
 }
+
+@media screen and (max-width: 992px){
+    .hide-row-992{
+        display:none;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .hide-row-768{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 537px){
+    .hide-row-537{
+        display: none;
+    }
+}
+
+

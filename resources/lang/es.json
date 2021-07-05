@@ -1,6 +1,7 @@
 {
     "Login": "Login",
     "E-Mail Address": "Dirección de e-mail",
+    "Company" : "Compañia",
     "Password": "Contraseña",
     "Confirm Password": "Confirmar contraseña",
     "Remember Me": "Recordarme",

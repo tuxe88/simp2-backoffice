@@ -31,6 +31,11 @@
                                            style="width: 100%;" role="grid" aria-describedby="example_info">
                                         <thead>
                                         <tr role="row">
+                                            <th hidden class="wd-15p sorting" tabindex="0" aria-controls="example"
+                                                           rowspan="1" colspan="1" aria-sort="ascending"
+                                                           aria-label="Name: activate to sort column descending"
+                                                           style="width: 15px;">id
+                                            </th>
                                             <th class="wd-15p sorting" tabindex="0" aria-controls="example"
                                                 rowspan="1" colspan="1" aria-sort="ascending"
                                                 aria-label="Name: activate to sort column descending"
@@ -45,11 +50,11 @@
                                                 colspan="1" aria-label="Status: activate to sort column ascending"
                                                 style="width: 47px;">Status
                                             </th>
-                                            <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                            <th class="wd-15p sorting hide-row-537" tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" aria-label="Role: activate to sort column ascending"
                                                 style="width: 47px;">Role
                                             </th>
-                                            <th class="wd-15p sorting" tabindex="0" aria-controls="example"
+                                            <th  class="wd-15p sorting hide-row-768" tabindex="0" aria-controls="example"
                                                 rowspan="1" colspan="1" aria-sort="ascending"
                                                 aria-label="Creation date: activate to sort column descending"
                                                 style="width: 47px;">Creation date
@@ -64,6 +69,7 @@
                                         <tbody>
                                         @foreach ($response["backoffice_users"] as $user)
                                                 <tr role="row" class="@if ($loop->even) even @else odd @endif">
+                                                    <td hidden>{{$user["id"]}}</td>
                                                     <td class="sorting_1">{{$user["name"]}}</td>
                                                     <td>{{$user["email"]}}</td>
                                                     <td>
@@ -73,13 +79,13 @@
                                                             <span class="tag tag-gray">Disabled</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{$user->getRoleNames()[0]}}</td>
-                                                    <td>{{$user["created_at"]->format('j F, Y')}}</td>
+                                                    <td class="hide-row-537">{{$user->getRoleNames()[0]}}</td>
+                                                    <td class="hide-row-768">{{$user["created_at"]->format('j F, Y')}}</td>
                                                     <td>
                                                         <div class="item-action dropdown">
                                                             <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                                <a href="javascript:editCompany(0)" class="dropdown-item"><i class="dropdown-icon fe fe-edit-2"></i> Edit </a>
+                                                                <a href="javascript:editBackofficeUser(0)" class="dropdown-item"><i class="dropdown-icon fe fe-edit-2"></i> Edit </a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -130,9 +136,9 @@
                                             <th class="wd-15p sorting" tabindex="0" aria-controls="example"
                                                 rowspan="1" colspan="1" aria-sort="ascending"
                                                 aria-label="Name: activate to sort column descending"
-                                                style="width: 47px;">Name
+                                                style="width: 47px;">Name/Payment method
                                             </th>
-                                            <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1"
+                                            <th class="wd-15p sorting hide-row-768" tabindex="0" aria-controls="example" rowspan="1"
                                                 colspan="1" aria-label="Status: activate to sort column ascending"
                                                 style="width: 47px;">Api key
                                             </th>
@@ -140,11 +146,12 @@
                                                 colspan="1" aria-label="Role: activate to sort column ascending"
                                                 style="width: 47px;">Enabled
                                             </th>
-                                            {{--<th class="wd-15p sorting" tabindex="0" aria-controls="example"
+                                            <th class="wd-15p sorting" tabindex="0" aria-controls="example"
                                                 rowspan="1" colspan="1" aria-sort="ascending"
                                                 aria-label="Creation date: activate to sort column descending"
-                                                style="width: 47px;">Ip list
+                                                style="width: 47px;">Company
                                             </th>
+                                            {{--
                                             <th class="wd-15p sorting" tabindex="0" aria-controls="example"
                                                 rowspan="1" colspan="1" aria-sort="ascending"
                                                 aria-label="Creation date: activate to sort column descending"
@@ -158,11 +165,7 @@
                                             <th class="wd-15p sorting" tabindex="0" aria-controls="example"
                                                 rowspan="1" colspan="1" aria-sort="ascending"
                                                 aria-label="Creation date: activate to sort column descending"
-                                                style="width: 5px;">Company
-                                            </th>
-                                            <th class="wd-25p sorting" tabindex="0" aria-controls="example" rowspan="1"
-                                                colspan="1" aria-label="Options: activate to sort column ascending"
-                                                style="width: 5px;">
+                                                style="width: 5px;">Options
                                             </th>
                                         </tr>
                                         </thead>
@@ -174,8 +177,12 @@
                                                         {{ trim($id) }}
                                                     @endforeach
                                                 </td>
-                                                <td class="sorting_1">{{$user["name"]}} {{$user["last_name"]}}</td>
-                                                <td>{{$user["api_key"]}}</td>
+                                                @if($user["name"]=="-")
+                                                    <td class="sorting_1">{{$user["id"]}}</td>
+                                                @else
+                                                    <td class="sorting_1">{{$user["name"]}} {{$user["last_name"]}}</td>
+                                                @endif
+                                                <td class="hide-row-768">{{$user["api_key"]}}</td>
                                                 <td>
                                                     @if ( isset($user["enabled"]) && $user["enabled"]==true)
                                                         <span class="tag tag-lime">Enabled</span>
@@ -216,6 +223,61 @@
 
 
     <!-- Message Modal -->
+    <div class="modal fade" id="modifyModalBackofficeUser" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="example-Modal3">Edit backoffice user</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('users')}}" method="post">
+                        {{ csrf_field() }}
+                        {{ method_field('PUT') }}
+
+                        <input hidden type="text" class="form-control" name="id-user-backoffice-modify" id="id-user-backoffice-modify">
+
+                        <div class="form-group">
+                            <label class="form-label">User role</label>
+                            <select name="role-select-backoffice-modify" id="role-select-backoffice-modify" class="form-control custom-select">
+                                <option value='admin'>admin</option>
+                                <option value='user'>user</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company</label>
+                            <select name="company-select-backoffice-modify" id="company-select-backoffice-modify" class="form-control custom-select">
+                                @foreach($response["companies"] as $company )
+                                    @isset($company["unique_id"])
+                                        <option value="{{$company["unique_id"]}}">{{$company["name"]}}</option>
+                                    @endisset
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group" id="api-key-modify-div">
+                            <label for="recipient-api-key-backoffice-modify" class="form-control-label">Api-key:</label>
+                            <input type="text" class="form-control" name="api-key-backoffice-modify" id="api-key-backoffice-modify">
+                        </div>
+                        <label class="custom-switch">
+                            <input id="checkbox-enable-backoffice-modify" type="checkbox" name="checkbox-enable-backoffice-modify" class="custom-switch-input" checked>
+                            <span class="custom-switch-indicator"></span>
+                            <span class="custom-switch-description">Enabled</span>
+                        </label>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Modify user</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Message Modal -->
     <div class="modal fade" id="addModalApiClients" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -229,18 +291,27 @@
                     <form action="{{route('users')}}" method="post">
                         @csrf <!-- {{ csrf_field() }} -->
                             <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Name:</label>
-                                <input type="text" class="form-control" name="name" id="user-name-create">
-                            </div>
-                            <div class="form-group">
-                                <label for="recipient-last-name" class="form-control-label">Last name:</label>
-                                <input type="text" class="form-control" name="last_name" id="user-last-name-create">
-                            </div>
-                            <div class="form-group">
                                 <label class="form-label">User role</label>
                                 <select name="user_role_create" id="select-roles-create" class="form-control custom-select">
                                     <option value="admin">admin</option>
                                     <option value="user">user</option>
+                                    {{--<option value="payment_method">payment method</option>--}}
+                                </select>
+                            </div>
+                            <div class="form-group" id="user-name-create-div">
+                                <label for="recipient-name" class="form-control-label">Name:</label>
+                                <input type="text" class="form-control" name="name" id="user-name-create">
+                            </div>
+                            <div class="form-group" id="user-last-name-create-div">
+                                <label for="recipient-last-name" class="form-control-label">Last name:</label>
+                                <input type="text" class="form-control" name="last_name" id="user-last-name-create">
+                            </div>
+                            <div class="form-group" style="display: none;" id="user-id-create-div">
+                                <label class="form-label">Payment method</label>
+                                <select name="id" id="user-id-create-select" class="form-control custom-select">
+                                    <option value="rapipago">Rapipago</option>
+                                    <option value="pagofacil">Pagofacil</option>
+                                    <option value="paypal">Paypal</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -323,16 +394,16 @@
 
             $('#example tbody').on( 'click', 'a', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                $("#user-name-modify").val(data[0]);
+                $("#id-user-backoffice-modify").val(data[0]);
+                console.log(data[4]);
+                //$('#role-select-backoffice-modify option[value="'+data[4]+'"]');
 
-                $("#user-email-modify").val(data[1]);
+                //var enabled = data[2].includes("Enabled");
+                //$("#user-enable-modify").prop("checked", enabled);
 
-                var enabled = data[2].includes("Enabled");
-                $("#user-enable-modify").prop("checked", enabled);
-
-                var role = data[3]
-                //console.log(role);
-                $('#select-roles option[value="'+role+'"]');
+                //var role = data[3]
+                //console.log(data);
+                //$('#role-select-backoffice-modify option[value="'+role+'"]');
 
             } );
 
@@ -354,24 +425,43 @@
                 var enabled = data[3].includes("Enabled");
                 $("#user-api-client-enable-modify").prop("checked", enabled);
                 console.log(enabled);
-                //var role = data[3]
-                //console.log(role);
-                //$('#select-roles option[value="'+role+'"]');
 
             } );
 
+            $('#user-id-create-select').attr('disabled', 'disabled');
         });
 
+        $('#modifyModalBackofficeUser').on('hidden.bs.modal', function (e) {
+            $('id-user-backoffice-modify').val("");
+        });
 
-        function editCompany(a){
+        function editBackofficeUser(a){
             //console.log(a);
-            $("#modifyModal").modal();
+            $("#modifyModalBackofficeUser").modal();
         }
 
         function editApiClient(a){
             //console.log(a);
             $("#modifyModalApiClients").modal();
         }
+
+        $('#select-roles-create').change(function() {
+            if($('#select-roles-create').val()==='payment_method'){
+                $('#user-name-create-div').hide();
+                $('#user-name-create').val("-");
+                $('#user-last-name-create-div').hide();
+                $('#user-last-name-create').val("-");
+                $('#user-id-create-div').show();
+                $('#user-id-create-select').removeAttr('disabled');
+            }else{
+                $('#user-name-create-div').show();
+                $('#user-name-create').val("");
+                $('#user-last-name-create-div').show();
+                $('#user-last-name-create').val("");
+                $('#user-id-create-div').hide();
+                $('#user-id-create-select').attr('disabled', 'disabled');
+            }
+        });
 
     </script>
 @endpush

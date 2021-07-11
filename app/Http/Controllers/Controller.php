@@ -26,6 +26,8 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     private $client;
     private $apiKey;
+    private $companyTransactionToken;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -118,10 +120,10 @@ class Controller extends BaseController
                 $user->company_unique_id = $companyId;
                 $user->enabled = $enabled;
                 $user->api_key = $apiKey;
-                //dd($userRole,$user);
-                $user->assignRole($userRole);
+                $user->assignRole("user");
                 $user->save();
 
+                //dd($userRole,$user);
             }else{
                 $enabled = isset($request->all()["enabled"]) ? true : false;
                 $userId = $request->get('id-user-apiclient-modify');
@@ -212,7 +214,7 @@ class Controller extends BaseController
                 $clientId = $request->get('client-id-filter');
 
                 $filter = [
-                    //'debt.company_id'=>$user["company_unique_id"]
+                    'debt.company_id'=>$user["company_unique_id"]
                 ];
 
                 if($request->get('from-date-filter') || $request->get('to-date-filter')){
@@ -332,6 +334,7 @@ class Controller extends BaseController
                 //dd($res->getStatusCode());
                 $response["successMsg"] = "The debt was deleted successfully.";
             }catch (ClientException $e){
+                dd($e->getResponse()->getStatusCode());
                 $response["errorMsg"] = "An unexpected error has ocurred please retry.";
             }catch (\Exception $e){
                 dd($e->getMessage());
@@ -363,13 +366,13 @@ class Controller extends BaseController
                     "as"=>"debt"
                 ]
             ],
-            /*[
+            [
                 '$match'=>[
                     'debt.company_id'=>$user["company_unique_id"]
                 ]
-            ],*/
+            ],
         );
-
+        //dd($pipeline);
         $payments = $collection->aggregate($pipeline)->toArray();
         //dd($payments);
         $subs = [];
@@ -400,7 +403,7 @@ class Controller extends BaseController
         /*get the user company id and search whole company reverses**/
         $user = Auth::user();
         $reverses = $mongoClient->simp2->testPayments->find([
-            //'company_id'=>$user["company_unique_id"],
+            'company_id'=>$user["company_unique_id"],
             'status'=>new \MongoDB\BSON\Regex("rollback_")
         ])->toArray();
 
@@ -416,6 +419,7 @@ class Controller extends BaseController
         /*get the user company id and search whole company reverses**/
         $user = Auth::user();
         $reverses = $mongoClient->simp2->testPayments->find([
+            'company_id'=>$user["company_unique_id"],
             'created_at'=> ["\$lte"=>new UTCDateTime(Carbon::today()->subDays(4)->getTimestamp()*1000)],
             'status'=>new \MongoDB\BSON\Regex("pending_payment")
         ])->toArray();

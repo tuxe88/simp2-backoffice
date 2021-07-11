@@ -1,5 +1,5 @@
-@extends('layouts.base', ["title"=> "Debts",
-                            "sectionTitle"=>"Debts",
+@extends('layouts.base', ["title"=> "Reverses",
+                            "sectionTitle"=>"Reverses",
                             "subSectionTitle"=>"",
                             "subSectionSubTitle"=>""])
 
@@ -7,6 +7,7 @@
     <link href="{{asset('plugins/datatable/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
     <link href="{{asset('plugins/select2/select2.min.css')}}" rel="stylesheet" />
     <link href="{{asset('plugins/date-picker/spectrum.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css">
 @endpush
 
 @section('content')
@@ -18,7 +19,7 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Current debts</div>
+                    <div class="card-title">Current reverses</div>
                 </div>
                 <div class="d-flex table-responsive p-3">
                     <div class="btn-group mr-2">
@@ -90,11 +91,10 @@
                                                 </td>
                                                 <td class="hide-row-768">
                                                     @if ( isset($debt["expired"]) && $debt["expired"]==true)
-                                                        <span class="tag tag-danger">Expired</span>
+                                                        <div style="color:red;"><strong>{{$debt["due_date"]->toDateTime()->format('Y-m-d H:i:s')}}</strong></div>
                                                     @else
-                                                        <span class="tag tag-cyan">Non expired</span>
+                                                        <div><strong>{{$debt["due_date"]->toDateTime()->format('Y-m-d H:i:s')}}</strong></div>
                                                     @endif
-                                                    <div class="small text-muted text-gray-dark">Due date: {{$debt["due_date"]->toDateTime()->format('Y-m-d')}}</div>
                                                 </td>
                                                 @switch($debt["status"])
                                                     @case("pending_payment")
@@ -110,10 +110,10 @@
 
                                                     @break
                                                     @case("rollback_notified")
-                                                    <td class="sorting_1"><span class="badge badge-warning">Rollback notified</span></td>
+                                                    <td style="color: mediumpurple" class="sorting_1"><strong>Rollback notified</strong></td>
                                                     @break
                                                     @case("rollback_confirmed")
-                                                    <td class="sorting_1"><span class="badge badge-default">Rollback confirmed</span></td>
+                                                    <td style="color: darkgray" class="sorting_1"><strong>Rollback confirmed</strong></td>
                                                     @break
                                                     @default
                                                     <td class="sorting_1"><span class="badge badge-danger">No status defined</span></td>
@@ -212,6 +212,12 @@
     <script src="{{asset('plugins/date-picker/spectrum.js')}}"></script>
     <script src="{{asset('plugins/date-picker/jquery-ui.js')}}"></script>
     <script src="{{asset('plugins/input-mask/jquery.maskedinput.js')}}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
 
 
     <script>
@@ -224,7 +230,43 @@
                     "columnDefs": [ {
                         "targets": [3],
                         "orderable": false
-                    } ]
+                    } ],
+                    dom: 'lBfrtip',
+                    buttons: [
+                        {
+                            extend:'copy',
+                            exportOptions: {
+                                columns: [3,4,5,6,7]
+                            }
+                        },
+                        {
+                            extend: 'csv',
+                            exportOptions: {
+                                columns: [3,4,5,6,7]
+                            }
+                        } ,
+                        {
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [3,4,5,6,7]
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            exportOptions: {
+                                columns: [3,4,5,6,7]
+                            }
+                        },
+                        {
+                            extend:'print',
+                            exportOptions: {
+                                columns: [3,4,5,6,7]
+                            }
+                        }
+                    ],
+                    exportOptions: {
+                        columns:'visible'
+                    }
                 }
             )
 

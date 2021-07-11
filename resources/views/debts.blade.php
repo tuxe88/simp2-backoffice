@@ -32,6 +32,7 @@
                         <button type="button" class="btn btn-light"><i class="mdi mdi-download"></i></button>
                     </div>--}}
                 </div>
+                @if(Auth::user()->api_key != null)
 
                 <div class="col-lg-12">
                     <div class="card">
@@ -195,6 +196,7 @@
                                         @endforelse
                                         </tbody>--}}
                                     </table>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -572,8 +574,8 @@
                                 $('td', row).eq(3).css("color",'darkGray').wrapInner("<strong />");
                                 break;
                         }
-
-                        $('td', row).eq(5).html('<div class="item-action dropdown"> <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a> <div class="dropdown-menu dropdown-menu-right"> <a href="javascript:debtDetails(0)" class="dropdown-item"><i class="dropdown-icon fe fe-book-open"></i> Details </a> </div> </div>')
+                        var deleteOption =   data["status"] == 'pending_payment' ? '<a href="javascript:deleteDebt(0)" class="dropdown-item"><i class="dropdown-icon fe fe-delete"></i> Delete </a>' : "";
+                        $('td', row).eq(5).html('<div class="item-action dropdown"> <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a> <div class="dropdown-menu dropdown-menu-right"> <a href="javascript:debtDetails(0)" class="dropdown-item"><i class="dropdown-icon fe fe-book-open"></i> Details </a> '+deleteOption+' </div> </div>')
                     }
                 }
             )

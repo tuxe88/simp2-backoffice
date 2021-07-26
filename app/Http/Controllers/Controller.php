@@ -55,7 +55,7 @@ class Controller extends BaseController
         {
             $all = $request->all();
             try {
-                $this->client->post('company', ["form_params" => $request->all()]);
+                $this->client->post('company', ["form_params" => $request->all(),'debug'=>true]);
                 $response["successMsg"] = "The company ".$all["name"]." was created successfully.";
             }catch (ClientException $e){
                 if($e->getResponse()->getStatusCode()==409){

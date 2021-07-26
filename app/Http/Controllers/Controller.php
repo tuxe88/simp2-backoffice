@@ -55,7 +55,7 @@ class Controller extends BaseController
         {
             $all = $request->all();
             try {
-                $r = $this->client->post('company', ["form_params" => $request->all(),'debug'=>true]);
+                $r = $this->client->post('company', ["form_params" => $request->all(),'debug'=>true,"allow_redirects" => false]);
                 dd($r,$r->getBody()->getContents(),json_encode($all));
                 $response["successMsg"] = "The company ".$all["name"]." was created successfully.";
             }catch (ClientException $e){

@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class SeedAdminUser extends Command
@@ -21,7 +21,7 @@ class SeedAdminUser extends Command
     {
         $mongoClient = new \MongoDB\Client($_ENV['MONGODB_CS']);
         $db = $mongoClient->simp2;
-        $company = $db->companies->find(['unique_id' => 0])->toArray()[0];
+        $company = $db->companies->find(['unique_id' => 0])->toArray()[0] ?? null;
 
         if (!$company) {
             $this->error('The company 0 does not exist.');

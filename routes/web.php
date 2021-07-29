@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Auth::check() ?  view('dashboard') :  view('auth.login');
 });
 
 Auth::routes(['register' => false]);

@@ -199,8 +199,8 @@
 <div class="cont_principal">
     <div class="cont_error">
 
-        <h1>404</h1>
-        <p>The Page you're looking for isn't here, go <a href="{{route('dashboard')}}">back</a></p>
+        <h1>Oops</h1>
+        <p>An unexpected error has ocurred, please go <a href="{{route('dashboard')}}">back</a> and try again</p>
     </div>
     <div class="cont_aura_1"></div>
     <div class="cont_aura_2"></div>

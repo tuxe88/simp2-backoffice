@@ -193,6 +193,7 @@ class Controller extends BaseController
         $response["roles"] = Role::all();
         //dd($response["api_clients"][0]["_id"]);
 
+        throw new \Exception("");
         return view('users', ["response"=>$response]);
     }
 

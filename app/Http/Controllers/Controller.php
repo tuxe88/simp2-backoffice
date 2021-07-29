@@ -202,6 +202,7 @@ class Controller extends BaseController
         $user = Auth::user();
 
         $mongoClient = new \MongoDB\Client($_ENV['MONGODB_CS']);
+        //TODO show configurations payment methods from companies
         $paymentMethods = ["rapipago","pagofacil","paypal"];
 
 

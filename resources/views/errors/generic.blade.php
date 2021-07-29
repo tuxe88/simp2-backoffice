@@ -200,7 +200,7 @@
     <div class="cont_error">
 
         <h1>Oops</h1>
-        <p>An unexpected error has ocurred, please go <a href="{{route('dashboard')}}">back</a> and try again</p>
+        <p>An unexpected error has occurred, please go <a href="{{route('dashboard')}}">back</a> and try again</p>
     </div>
     <div class="cont_aura_1"></div>
     <div class="cont_aura_2"></div>

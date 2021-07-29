@@ -193,21 +193,18 @@ class Controller extends BaseController
         $response["roles"] = Role::all();
         //dd($response["api_clients"][0]["_id"]);
 
-        throw new \Exception("");
         return view('users', ["response"=>$response]);
     }
 
     public function debts(Request $request){
         $response = [];
-        /*get the user company id and search whole company debts debts**/
+        /*get the user company id and search whole company debts**/
         $user = Auth::user();
 
         $mongoClient = new \MongoDB\Client($_ENV['MONGODB_CS']);
-        //TODO show configurations payment methods from companies
-        $paymentMethods = ["rapipago","pagofacil","paypal"];
 
+        $paymentMethods = $this->getCompanyPaymentMethods($mongoClient,$user);
 
-        //dd($payments);
         if ($request->method() == 'POST')
         {
             if($request->get('from-date-filter') || $request->get('to-date-filter') ||
@@ -459,4 +456,16 @@ class Controller extends BaseController
         return new Response($response,200);
     }
 
+    private function getCompanyPaymentMethods($mongoClient, $user){
+        $company = $mongoClient->simp2->companies->find([
+            'unique_id'=>$user["company_unique_id"]
+        ])->toArray();
+
+        $paymentMethods = [];
+        foreach ($company[0]["configuration"][0]["payment_methods"] as $key => $value){
+            $paymentMethods[] = $key;
+        }
+
+        return $paymentMethods;
+    }
 }

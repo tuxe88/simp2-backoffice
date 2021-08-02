@@ -74,9 +74,10 @@ class Controller extends BaseController
         if ($request->method() == 'PUT')
         {
             $all = $request->all();
-            $name = $all["name"];
-            $jsonConfig = $all["company-modify-config-json"];
             //dd($all);
+            $name = $all["name"];
+            $jsonConfig = json_decode($all["company-modify-config-json"],true);
+            //dd(json_decode($all["company-modify-config-json"],true)[0]);
             $enabled = isset($all["enabled"]);
 
             try{

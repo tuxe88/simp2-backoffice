@@ -69,7 +69,7 @@
                                         <tbody>
                                         @foreach ($response["backoffice_users"] as $user)
                                                 <tr role="row" class="@if ($loop->even) even @else odd @endif">
-                                                    <td hidden>{{$user["id"]}}</td>
+                                                    <td hidden>{{$user}}</td>
                                                     <td class="sorting_1">{{$user["name"]}}</td>
                                                     <td>{{$user["email"]}}</td>
                                                     <td>
@@ -394,11 +394,17 @@
 
             $('#example tbody').on( 'click', 'a', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                $("#id-user-backoffice-modify").val(data[0]);
-                console.log(data[4]);
-                //$('#role-select-backoffice-modify option[value="'+data[4]+'"]');
+                var json = JSON.parse(data[0]);
+                var role = json["company_unique_id"] == 1 ? 'user' : 'admin';
+                var enabled = json["enabled"] == 0 ? $('#checkbox-enable-backoffice-modify').prop("checked", false)  :
+                    $('#checkbox-enable-backoffice-modify').prop("checked", true);
+                console.log(json);
+                $("#id-user-backoffice-modify").val(json["id"]);
+                $("#api-key-backoffice-modify").val(json["api_key"]);
 
-                //var enabled = data[2].includes("Enabled");
+                $('#role-select-backoffice-modify option[value="'+role+'"]');
+
+                //var enabled = json["enabled"];
                 //$("#user-enable-modify").prop("checked", enabled);
 
                 //var role = data[3]
@@ -419,12 +425,12 @@
 
             $('#example-api-clients tbody').on( 'click', 'a', function () {
                 var data = table_api_clients.row( $(this).parents('tr') ).data();
-                console.log(data);
+                //console.log(data[0]);
                 $("#id-user-apiclient-modify").val(data[0]);
 
                 var enabled = data[3].includes("Enabled");
                 $("#user-api-client-enable-modify").prop("checked", enabled);
-                console.log(enabled);
+                //console.log(enabled);
 
             } );
 

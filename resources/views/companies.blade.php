@@ -251,9 +251,17 @@
         $(document).ready(function() {
             $('#btn-modify-submit').prop('disabled',true);
             $('#company-modify-config-json').keyup(function (){
-                if($(this).val().length !=0){
+                try {
+                    //console.log();
+                    var a  = $.parseJSON($('#company-modify-config-json').val());
+                    console.log(a);
+                    console.log("Json ok");
+                    //$('#btn-modify-submit').val($.parseJSON($('#company-modify-config-json').val()));
+
                     $('#btn-modify-submit').prop('disabled',false);
-                }else{
+                }
+                catch (err) {
+                    //console.log("Json vergeado");
                     $('#btn-modify-submit').prop('disabled',true);
                 }
             });
@@ -304,10 +312,7 @@
 
         $('#company-modify-config-json').focusout(function(e) {
 
-            console.log("Checking valid json TODO");
-            /*if( IsJsonString($('#company-modify-config-json').val())){
-                alert("Json valido");
-            }*/
+
 
         });
 

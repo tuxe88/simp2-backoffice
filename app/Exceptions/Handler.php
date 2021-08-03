@@ -52,6 +52,10 @@ class Handler extends ExceptionHandler
             return parent::render($request, $exception);
         }
 
+        if ($exception instanceof AuthorizationException) {
+            return response()->view('errors.403', [], 403);
+        }
+
         if($exception instanceof \Exception)
         {
         //    return response()->view('errors.generic', [], 500);

@@ -74,10 +74,11 @@ class Controller extends BaseController
         if ($request->method() == 'PUT')
         {
             $all = $request->all();
-            //dd($all);
+            //dd($all["company-modify-config-json"]);
             $name = $all["name"];
             $jsonConfig = json_decode($all["company-modify-config-json"],true);
-            //dd(json_decode($all["company-modify-config-json"],true)[0]);
+            //dd(json_last_error());
+            dd(json_encode($jsonConfig));
             $enabled = isset($all["enabled"]);
 
             try{
@@ -113,7 +114,7 @@ class Controller extends BaseController
             if(isset($request->all()["id-user-backoffice-modify"])){
                 $req = $request->all();
                 $userId = intval($req["id-user-backoffice-modify"]);
-                $userRole = $req["role-select-backoffice-modify"];
+                $userRole = Role::findByName($req["role-select-backoffice-modify"]);;
                 $companyId = $req["company-select-backoffice-modify"];
                 $apiKey = $req["api-key-backoffice-modify"];
                 $enabled = isset($req["checkbox-enable-backoffice-modify"]) ? true : false;
@@ -122,7 +123,8 @@ class Controller extends BaseController
                 $user->company_unique_id = $companyId;
                 $user->enabled = $enabled;
                 $user->api_key = $apiKey;
-                $user->assignRole("user");
+                $user->syncRoles($userRole);
+                //dd($user);
                 $user->save();
 
                 //dd($userRole,$user);
@@ -332,15 +334,10 @@ class Controller extends BaseController
 
             try {
                 $res = $this->client->delete('payments/delete/'.$uniqueRef,[]);
-                //dd($res->getStatusCode());
                 $response["successMsg"] = "The debt was deleted successfully.";
-            }catch (ClientException $e){
-                dd($e->getResponse()->getStatusCode());
+            }catch (ClientException | \Exception $e){
                 $response["errorMsg"] = "An unexpected error has ocurred please retry.";
-            }catch (\Exception $e){
-                dd($e->getMessage());
-                $response["errorMsg"] = "An unexpected error has ocurred please retry.";
-            }catch (GuzzleException $e){
+            } catch (GuzzleException $e){
                 $response["warningMsg"] = "There was an error in the connection, please retry.";
             }
 
@@ -463,7 +460,7 @@ class Controller extends BaseController
         ])->toArray();
 
         $paymentMethods = [];
-        foreach ($company[0]["configuration"][0]["payment_methods"] as $key => $value){
+        foreach ($company[0]["configuration"]["payment_methods"] as $key => $value){
             $paymentMethods[] = $key;
         }
 

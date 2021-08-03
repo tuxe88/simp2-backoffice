@@ -21,13 +21,13 @@ Auth::routes(['register' => false]);
 
 Route::get('/dashboard', [App\Http\Controllers\Controller::class, 'dashboard'])->name('dashboard')->middleware('auth', 'role:admin|user');
 
-Route::get('/companies', [App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth');
-Route::post('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth');
-Route::put('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth');
+Route::get('/companies', [App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth', 'role:admin');
+Route::post('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth', 'role:admin');
+Route::put('/companies',[App\Http\Controllers\Controller::class, 'companies'])->name('companies')->middleware('auth', 'role:admin');
 
-Route::get('/users', [App\Http\Controllers\Controller::class, 'users'])->name('users')->middleware('auth');
-Route::post('/users',[App\Http\Controllers\Controller::class, 'users'])->name('users')->middleware('auth');
-Route::put('/users',[App\Http\Controllers\Controller::class, 'users'])->name('users')->middleware('auth');
+Route::get('/users', [App\Http\Controllers\Controller::class, 'users'])->name('users')->middleware('auth', 'role:admin');
+Route::post('/users',[App\Http\Controllers\Controller::class, 'users'])->name('users')->middleware('auth', 'role:admin');
+Route::put('/users',[App\Http\Controllers\Controller::class, 'users'])->name('users')->middleware('auth', 'role:admin');
 
 Route::get('/debts', [App\Http\Controllers\Controller::class, 'debts'])->name('debts')->middleware('auth');
 Route::post('/debts',[App\Http\Controllers\Controller::class, 'debts'])->name('debts')->middleware('auth');

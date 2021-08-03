@@ -101,7 +101,7 @@ class CreateUser extends Command
         $user = User::create([
             'name' => "$this->firstname $this->lastname",
             'email' => $this->email,
-            'password' => $this->password,
+            'password' => Hash::make($this->password),
             'enabled' => true,
             'api_key' => $api_key,
             'company_unique_id' => $this->company_unique_id

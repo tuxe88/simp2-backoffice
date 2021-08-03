@@ -149,7 +149,7 @@
                         </div>
                         <h5 class="modal-title" id="example-Modal3">Configuracion de medios de pago</h5>
                         <br>
-                        <textarea class="form-control" id ="company-modify-config-json" name="company-modify-config-json" rows="10" placeholder='[ { "bridge" : { "enabled" : true, "bridge_url" : "https://herbalife.sandbox.simp2.com/api/v1/debt/unique" }, "payment_methods" : { "paypal" : { "method" : "POST", "replicator" : { "payment_notification" : { "enabled" : false, "url" : "https://herbalife.sandbox.simp2.com/api/v1/payments/notify", "method" : "POST" }, "payment_confirmation" : { "enabled" : false, "url" : null, "method" : "POST" }, "reverse_notification" : { "enabled" : false, "url" : null, "method" : "POST" }, "reverse_confirmation" : { "enabled" : false, "url" : null, "method" : "POST" } } }, "rapipago" : { "enabled" : false, "bridge_url" : null, "method" : "POST", "replicator" : { "payment_notification" : { "enabled" : false, "url" : null, "method" : "POST" }, "payment_confirmation" : { "enabled" : false, "url" : null, "method" : "POST" }, "reverse_notification" : { "enabled" : false, "url" : null, "method" : "POST" }, "reverse_confirmation" : { "enabled" : false, "url" : null, "method" : "POST" } } }, "pagofacil" : { "enabled" : true, "bridge_url" : "https://herbalife.sandbox.simp2.com/api/v1/debt/unique", "method" : "POST", "replicator" : { "payment_notification" : { "enabled" : true, "url" : "https://herbalife.sandbox.simp2.com/api/v1/payments/notify", "method" : "POST" }, "payment_confirmation" : { "enabled" : false, "url" : "http://localhost/simp2-notifications/public/api/requestRecieverTester", "method" : "POST" }, "reverse_notification" : { "enabled" : false, "url" : null, "method" : "POST" }, "reverse_confirmation" : { "enabled" : false, "url" : "http://localhost/simp2-notifications/public/api/requestRecieverTester", "method" : "POST" } } } } } ]'></textarea>
+                        <textarea class="form-control" id ="company-modify-config-json" name="company-modify-config-json" rows="10" placeholder='{ "bridge":{ "enabled":true, "bridge_url":"https://herbalife.sandbox.simp2.com/api/v1/debt/unique", "depth":"subdebt" }, "payment_methods":{ } }'></textarea>
                         {{--@foreach($response["paymentMethods"] as $pm)
                                 <div class="form-group">
                                     <label class="custom-switch">
@@ -276,7 +276,7 @@
 
             $('#example tbody').on( 'click', 'a', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                //console.log(data);
+                //console.log(JSON.stringify(data[0]));
                 $("#company-modify-config-json").val(data[0]);
                 $("#company-name-modify").val(data[1]);
                 var enabled = data[2].includes("Enabled");

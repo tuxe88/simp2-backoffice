@@ -78,12 +78,11 @@ class Controller extends BaseController
             $name = $all["name"];
             $jsonConfig = json_decode($all["company-modify-config-json"],true);
             //dd(json_last_error());
-            //dd(json_encode($jsonConfig));
             $enabled = isset($all["enabled"]);
-
+            //dd(json_encode($jsonConfig), $enabled);
             try{
                 //dd( json_encode(["name"=>$name, "enabled"=>$enabled,"json_config"=>$jsonConfig]));
-                $response_guzzle = $this->client->put('company', ["form_params" => ["name"=>$name, "enabled"=>$enabled,"json_config"=>$jsonConfig]]);
+                $response_guzzle = $this->client->put('company', ["form_params" => ["name"=>$name, "enabled"=>$enabled,"json_config"=>$jsonConfig]/*,"debug"=>true*/]);
                 $response["successMsg"] = "The company ".$all["name"]." was modified successfully.";
                 //var_dump($response_guzzle->getBody()->getContents());
             }catch (ClientException $e) {
@@ -93,6 +92,7 @@ class Controller extends BaseController
                 }
             }catch (ServerException $e){
                 if($e->getResponse()->getStatusCode()==500){
+                    dd($e->getMessage());
                     $response["errorMsg"] = "An unexpected error has ocurred please retry.";
                 }
             }catch (GuzzleException $e){

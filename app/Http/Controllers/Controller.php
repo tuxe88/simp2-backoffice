@@ -78,7 +78,7 @@ class Controller extends BaseController
             $name = $all["name"];
             $jsonConfig = json_decode($all["company-modify-config-json"],true);
             //dd(json_last_error());
-            dd(json_encode($jsonConfig));
+            //dd(json_encode($jsonConfig));
             $enabled = isset($all["enabled"]);
 
             try{

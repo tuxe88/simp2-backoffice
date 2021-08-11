@@ -461,7 +461,7 @@ class Controller extends BaseController
 
         $paymentMethods = [];
         foreach ($company[0]["configuration"]["payment_methods"] as $key => $value){
-            $paymentMethods[] = $value;
+            $paymentMethods[] = $value["name"];
         }
 
         return $paymentMethods;

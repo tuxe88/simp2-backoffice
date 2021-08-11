@@ -341,13 +341,14 @@
                         <div class="row">
                             <br>
                             <div class="col-md-12 col-lg-12">
-                                @foreach($response["payment_methods"] as $key=>$pm)
+                                @foreach($response["payment_methods"] as $pm)
+                                    {{var_dump($pm)}}
                                     <div class="form-group m-0">
                                         <div class="form-group">
                                             <label class="custom-switch">
-                                                <input type="checkbox" name="new-payment-switch-{{$pm["name"]}}" id="new-payment-switch-{{$pm["name"]}}" class="custom-switch-input payment-company-enable">
+                                                <input type="checkbox" name="new-payment-switch-{{$pm}}" id="new-payment-switch-{{$pm}}" class="custom-switch-input payment-company-enable">
                                                 <span class="custom-switch-indicator"></span>
-                                                <span class="custom-switch-description">{{$pm["name"]}}</span>
+                                                <span class="custom-switch-description">{{$pm}}</span>
                                             </label>
                                         </div>
 

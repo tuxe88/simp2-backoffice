@@ -342,7 +342,7 @@
                             <br>
                             <div class="col-md-12 col-lg-12">
                                 @foreach($response["payment_methods"] as $pm)
-                                    {{var_dump($pm)}}
+                                    {{print_r($pm)}}
                                     <div class="form-group m-0">
                                         <div class="form-group">
                                             <label class="custom-switch">

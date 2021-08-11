@@ -345,9 +345,9 @@
                                     <div class="form-group m-0">
                                         <div class="form-group">
                                             <label class="custom-switch">
-                                                <input type="checkbox" name="new-payment-switch-{{$pm}}" id="new-payment-switch-{{$pm}}" class="custom-switch-input payment-company-enable">
+                                                <input type="checkbox" name="new-payment-switch-{{$pm["name"]}}" id="new-payment-switch-{{$pm["name"]}}" class="custom-switch-input payment-company-enable">
                                                 <span class="custom-switch-indicator"></span>
-                                                <span class="custom-switch-description">{{$pm}}</span>
+                                                <span class="custom-switch-description">{{$pm["name"]}}</span>
                                             </label>
                                         </div>
 

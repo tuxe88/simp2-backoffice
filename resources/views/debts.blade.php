@@ -678,6 +678,7 @@
             var amount = $('#new-amount').val();
             var due_date = $('#new-debt-due-date').val();
             var text = $('#new-subdebt-text').val();
+            console.log(text);
             var arr_value = {
                 "unique_reference":unique_ref,
                 "amount":amount,
@@ -689,7 +690,7 @@
 
             $('#div-subdebts').append(
                 "<label class='selectgroup-item'>" +
-                    "<input type='checkbox' name='new-subdebt-"+unique_ref+"' id='new-subdebt-"+unique_ref+"' value="+json_array+" class='selectgroup-input' checked>"+
+                    "<input type='checkbox' name='new-subdebt-"+unique_ref+"' id='new-subdebt-"+unique_ref+"' value='"+json_array+"' class='selectgroup-input' checked>"+
                     "<span class='selectgroup-button'>"+unique_ref+"</span>"+
                 "</label>"
             );

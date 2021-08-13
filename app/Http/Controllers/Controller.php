@@ -302,7 +302,7 @@ class Controller extends BaseController
 
                     $arr["due_date"]= date_create_from_format('d/m/Y',$arr["due_date"])->format('Y-m-d H:i:s');
                     //$arr["due_date"]= date_create_from_format('d/m/Y',$arr["due_date"])->format('Y-m-d H:i:s');
-                    $arr["texts"] = [];
+
                     array_push(
                         $formParams["subdebts"],$arr);
                 }

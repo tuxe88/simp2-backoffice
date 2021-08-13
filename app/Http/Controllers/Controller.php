@@ -299,10 +299,14 @@ class Controller extends BaseController
                 //var_dump($value.'<br>');
                 if(str_contains($key,'new-subdebt-')){
                     $arr = json_decode($value,true);
-                    dd($arr);
+                    //dd($arr);
                     $arr["due_date"]= date_create_from_format('d/m/Y',$arr["due_date"])->format('Y-m-d H:i:s');
                     //$arr["due_date"]= date_create_from_format('d/m/Y',$arr["due_date"])->format('Y-m-d H:i:s');
-
+                    $arr["texts"] = [
+                        0=>[
+                            0=>$arr["texts"]
+                        ]
+                    ];
                     array_push(
                         $formParams["subdebts"],$arr);
                 }

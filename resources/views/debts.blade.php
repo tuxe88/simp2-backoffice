@@ -682,7 +682,7 @@
                 "unique_reference":unique_ref,
                 "amount":amount,
                 "due_date":due_date,
-                "texts":[[text]]
+                "texts":text
             };
             var json_array = JSON.stringify(arr_value);
             console.log(json_array);

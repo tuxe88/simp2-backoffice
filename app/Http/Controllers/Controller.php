@@ -269,6 +269,7 @@ class Controller extends BaseController
             }
 
             $all = $request->all();
+            dd($all);
             $formParams = [];
             $formParams["code"] = $all["new-code"];
             $formParams["ccf_code"] = $all["new-ccf-code"];

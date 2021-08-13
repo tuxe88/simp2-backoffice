@@ -685,7 +685,7 @@
                 "texts":text
             };
             var json_array = JSON.stringify(arr_value);
-            console.log(json_array);
+            //console.log(json_array);
 
             $('#div-subdebts').append(
                 "<label class='selectgroup-item'>" +

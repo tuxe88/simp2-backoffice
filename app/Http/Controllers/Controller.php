@@ -298,8 +298,10 @@ class Controller extends BaseController
             foreach ($all as $key => $value){
                 //var_dump($value.'<br>');
                 if(str_contains($key,'new-subdebt-')){
+
+                    dd($value);
                     $arr = json_decode($value,true);
-                    //dd($arr);
+
                     $arr["due_date"]= date_create_from_format('d/m/Y',$arr["due_date"])->format('Y-m-d H:i:s');
                     //$arr["due_date"]= date_create_from_format('d/m/Y',$arr["due_date"])->format('Y-m-d H:i:s');
                     $arr["texts"] = [

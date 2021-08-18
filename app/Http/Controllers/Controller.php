@@ -246,11 +246,11 @@ class Controller extends BaseController
                 }
 
                 $db = $mongoClient->simp2;
-                $collection = $db->testPayments;
+                $collection = $db->payments;
                 $pipeline = array(
                     [
                         '$lookup' => [
-                            "from" => "testDebts",
+                            "from" => "debts",
                             "localField" => "unique_reference",
                             "foreignField" => "subdebts.unique_reference",
                             "as"=>"debt"
@@ -351,21 +351,21 @@ class Controller extends BaseController
         }
 
 
-        $debts = $mongoClient->simp2->testDebts->find([
+        $debts = $mongoClient->simp2->debts->find([
             'company_id'=>$user["company_unique_id"],
             'barcode'=>['$ne'=>null]
         ])->toArray();
 
-        $payments = $mongoClient->simp2->testPayments->find([
+        $payments = $mongoClient->simp2->payments->find([
             'company_id'=>$user["company_unique_id"]
         ])->toArray();
 
         $db = $mongoClient->simp2;
-        $collection = $db->testPayments;
+        $collection = $db->payments;
         $pipeline = array(
             [
                 '$lookup' => [
-                    "from" => "testDebts",
+                    "from" => "debts",
                     "localField" => "unique_reference",
                     "foreignField" => "subdebts.unique_reference",
                     "as"=>"debt"
@@ -407,7 +407,7 @@ class Controller extends BaseController
 
         /*get the user company id and search whole company reverses**/
         $user = Auth::user();
-        $reverses = $mongoClient->simp2->testPayments->find([
+        $reverses = $mongoClient->simp2->payments->find([
             'company_id'=>$user["company_unique_id"],
             'status'=>new \MongoDB\BSON\Regex("rollback_")
         ])->toArray();
@@ -423,7 +423,7 @@ class Controller extends BaseController
 
         /*get the user company id and search whole company reverses**/
         $user = Auth::user();
-        $reverses = $mongoClient->simp2->testPayments->find([
+        $reverses = $mongoClient->simp2->payments->find([
             'company_id'=>$user["company_unique_id"],
             'created_at'=> ["\$lte"=>new UTCDateTime(Carbon::today()->subDays(4)->getTimestamp()*1000)],
             'status'=>new \MongoDB\BSON\Regex("pending_payment")
